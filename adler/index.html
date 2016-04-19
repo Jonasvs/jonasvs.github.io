@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <script src="adler01.js"></script>
+<script src="adler02.js"></script>
+<script src="adler03.js"></script>
+<script src="adler04.js"></script>
 <link rel="stylesheet" href="adler.css" />
 </head>
 <body>
@@ -17,13 +20,36 @@
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
         }).addTo(adlerKarte);
 	adlerKarte.setView([47, 11], 10);
-	var etappe01 = L.geoJson(etappe01json, {
+		var etappe01 = L.geoJson(etappe01json, {
 	style: {
-	color: "#ff0000",
+	color:"#ff0000",
 	weight: 15
 	}
 	});
 	adlerKarte.addLayer(etappe01);
+	var etappe02 = L.geoJson(etappe02json, {
+	style: {
+	color:"#FF00FF",
+	weight: 15
+	}
+	});
+	adlerKarte.addLayer(etappe02);
+	var etappe03 = L.geoJson(etappe03json, {
+	style: {
+	color:"#0000FF",
+	weight: 15
+	}
+	});
+	adlerKarte.addLayer(etappe03);
+	var etappe04 = L.geoJson(etappe04json, {
+	style: {
+	color:"#2E9AFE",
+	weight: 15
+	}
+	});
+	adlerKarte.addLayer(etappe04);
+	adlerKarte.fitBounds(etappe01.getBounds());
+		
 	</script>
   </body>
 </html>
