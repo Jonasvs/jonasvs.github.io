@@ -16,8 +16,7 @@
 <div id="adlerkarteDiv"></div>
 
 	<script>
-		window.onload = function () 
-	{
+		window.onload = function ()	{
 		
 			var layers = { // http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml
 				geolandbasemap : L.tileLayer("http://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
@@ -83,7 +82,7 @@
 	etappe02.bindPopup("<b>Etappe 02</b>");
 	etappe03.bindPopup("<b>Etappe 03</b>");
 	etappe04.bindPopup("<b>Etappe 04</b>");
-	};
+	
 	
 	var bounds = etappenGruppe.getBounds();
 	var url = 'http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=20'
@@ -96,11 +95,18 @@
 	var script = document.createElement("script");
 	script.src = url;
 	document.getElementsByTagName('head')[0].appendChild(script);
-	function zeigBilder() {
-	console.log("panoramio fertig geladen: ", photos);
+	window.zeigBilder = function(data) {
+		for (var i=0; i<data.photos.length; i++) {
+			console.log("panoramio fertig geladen: ", i, data.photos[i].photo_title);
+			L.marker([data.photos[i].latitude, data.photos[i].longitude],{ icon: L.icon({
+								iconUrl: data.photos[i].photo_file_url
+								}) 
+								}) .bindPopup("<h2>"+data.photos[i].photo_title+"</h2><a href='"+data.photos[i].photo_url+"'>Link zum Bild</a>")
+								.addTo(adlerKarte);
+		}
 	}
+};
 
-	
 	
 	</script>
   </body>
