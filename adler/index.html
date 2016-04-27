@@ -95,14 +95,18 @@
 	var script = document.createElement("script");
 	script.src = url;
 	document.getElementsByTagName('head')[0].appendChild(script);
-	window.zeigBilder = function(data) {
-		for (var i=0; i<data.photos.length; i++) {
-			console.log("panoramio fertig geladen: ", i, data.photos[i].photo_title);
-			L.marker([data.photos[i].latitude, data.photos[i].longitude],{ icon: L.icon({
-								iconUrl: data.photos[i].photo_file_url
-								}) 
-								}) .bindPopup("<h2>"+data.photos[i].photo_title+"</h2><a href='"+data.photos[i].photo_url+"'>Link zum Bild</a>")
-								.addTo(adlerKarte);
+	window.zeigWikis = function(data) {
+	// marker add, popup add, link add
+		for (var i=0; i<data.geonames.length; i++) {
+			console.log("Wiki-Titel: "+data.geonames[i].title);
+			var marker = L.marker([data.geonames[i].lat, data.geonames[i].lng]);
+			var icon = L.icon({ 
+			iconUrl: "wikipedia.png"
+			});
+			marker.setIcon(icon);
+			marker.bindPopup("<a href='http://"+data.geonames[i].wikipediaUrl
+			+"'>"+data.geonames[i].title+"</a>);
+							marker.addTo(adlerKarte);
 		}
 	}
 };
