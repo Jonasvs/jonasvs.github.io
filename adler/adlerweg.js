@@ -1,3 +1,4 @@
+//Javascript = Wege der Adlerkarte
         window.onload = function() {
 
             var layers = { // http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml
