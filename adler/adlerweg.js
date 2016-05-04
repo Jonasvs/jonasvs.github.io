@@ -24,17 +24,22 @@
                 })
             };
 
-
+			
             var adlerKarte = L.map("adlerkarteDiv");
+			var hash = new L.Hash(adlerKarte);
             var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
             }).addTo(adlerKarte);
             adlerKarte.setView([47, 11], 10);
+			var el = L.control.elevation({collapsed: true
+				}).addTo(adlerKarte);
             var etappe01 = L.geoJson(etappe01json, {
+			}).addTo(map);
                 style: {
                     color: "#ff0000",
                     weight: 15
                 }
+				onEachFeature: el.addData.bind(el)
             });
             adlerKarte.addLayer(etappe01);
 
@@ -94,7 +99,7 @@
             document.getElementsByTagName('head')[0].appendChild(script);
             window.zeigBilder = function(data) {
                 for (var i = 0; i < data.photos.length; i++) {
-                    console.log("panoramio fertig geladen: ", i, data.photos[i].photo_title);
+                    //console.log("panoramio fertig geladen: ", i, data.photos[i].photo_title);
                     L.marker([data.photos[i].latitude, data.photos[i].longitude], {
                             icon: L.icon({
                                 iconUrl: data.photos[i].photo_file_url
@@ -103,4 +108,40 @@
                         .addTo(adlerKarte);
                 }
             }
+			
+			// Höhen berechnen
+			var max = 0; 
+			var min = 9999;
+			var up = 0;
+			var down = 0;
+			var letzter; 
+			var diff = 0;
+			var aw1 = L.geoJson(etappe01json, {
+				onEachFeature: function(feature, layer) {
+					for (var i=0; i<feature.geometry.coordinates.length; i++) {
+						var c = feature.geometry.coordinates[i];
+						//console.log(i, ": ", c[2]);
+						//max = Math.max(max, c[2]);
+						//min = Math.min(min, c[2]);
+						//console.log(letzter , "-", c[2], (letzter - c[2]));
+						if (letzter) {
+							diff = diff + (c[2] - letzter);
+							if (letzter < c[2]) {
+							up = up + (c[2] - letzter);
+						} else if (letzter > c[2]){
+							down = down + (letzter - c[2]);
+						} else {
+							console.log("Letzter und aktueller Punkt sind gleich hoch");
+						}
+					}
+					letzter = c[2];
+					console.log("up: ", up, "down: ", down, diff);
+					}
+					console.log("MAX: ", max);
+					console.log("MIN: ", min);
+					
+					
+					//console.log(feature)
+				}
+			});
         };
